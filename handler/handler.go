@@ -41,8 +41,23 @@ func New(token string) {
 
 func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
+	help := `
+	COMMANDS:
+		-generate -Generate MIDI with Bpm
+		-gen - Same as -generate
+		-bpm - Generate BPM only
+		-b - Same as -bpm
+		-scale - Generte scale only
+		-s - Same as -scle	
+		-sbpm - Generate scale and BPM
+	`
+
 	if m.Author.ID == s.State.User.ID {
 		return
+	}
+
+	if m.Content == "-h" || m.Content == "--help" {
+		s.ChannelMessageSend(m.ChannelID, help)
 	}
 	if m.Content == "-bpm" || m.Content == "-b" {
 		gned := generator.Gen{}
@@ -57,6 +72,5 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		wholeMessage := fmt.Sprintf("BPM: %v", bpmstr)
 		filename, filethingo := Midi()
 		s.ChannelFileSendWithMessage(m.ChannelID, wholeMessage, filename, filethingo)
-
 	}
 }
