@@ -44,7 +44,7 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	help := `
 	COMMANDS:
 		-generate -Generate MIDI with Bpm
-		-gen - Same as -generate
+		-g - Same as -generate
 		-bpm - Generate BPM only
 		-b - Same as -bpm
 		-scale - Generte scale only
@@ -91,7 +91,7 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, wholeMessage)
 	}
 
-	if m.Content == "-generate" || m.Content == "-gen" || m.Content == ":3" {
+	if m.Content == "-generate" || m.Content == "-g" {
 		gned := generator.Gen{}
 		bpmstr := strconv.Itoa(gned.GetBpm())
 		wholeMessage := fmt.Sprintf("BPM: %v", bpmstr)
