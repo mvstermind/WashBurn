@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"math/rand"
 	"os"
 	"os/signal"
 	"strconv"
@@ -12,6 +11,8 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/mvstermind/halset/generator"
 )
+
+//var token string = "your token"
 
 func New(token string) {
 
