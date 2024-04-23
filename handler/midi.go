@@ -6,9 +6,9 @@ import (
 	"os"
 )
 
-func Midi(i int) (string, *os.File) {
+func Midi() (string, *os.File) {
 
-	Keys := "/Users/kneehead/work/github-bot/CHORD PROGRESSIONS/Minor/"
+	Keys := "/Users/kneehead/work/github-bot/CHORD PROGRESSIONS/"
 
 	dir, err := os.Open(Keys)
 	if err != nil {

@@ -44,13 +44,19 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	if m.Content == "generate minor" || m.Content == "gen min" || m.Content == ":3" {
+	if m.Content == "-bpm" || m.Content == "-b" {
 		gned := generator.Gen{}
 		bpmstr := strconv.Itoa(gned.GetBpm()) // had to do this cuz bot accepts only string
 		wholeMessage := fmt.Sprintf("BPM: %v", bpmstr)
 		s.ChannelMessageSend(m.ChannelID, wholeMessage)
-		k, v := Midi(1)
-		s.ChannelFileSend(m.ChannelID, k, v)
+
+	}
+	if m.Content == "-generate" || m.Content == "-gen" || m.Content == ":3" {
+		gned := generator.Gen{}
+		bpmstr := strconv.Itoa(gned.GetBpm())
+		wholeMessage := fmt.Sprintf("BPM: %v", bpmstr)
+		filename, filethingo := Midi()
+		s.ChannelFileSendWithMessage(m.ChannelID, wholeMessage, filename, filethingo)
 
 	}
 }
