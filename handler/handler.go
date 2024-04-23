@@ -50,6 +50,8 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		-scale - Generte scale only
 		-s - Same as -scle	
 		-sbpm - Generate scale and BPM
+		-chords - Generate text chord progression
+		-c - Same as -chords
 	`
 
 	if m.Author.ID == s.State.User.ID {
@@ -66,6 +68,29 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, wholeMessage)
 
 	}
+	if m.Content == "-sbpm" {
+		gned := generator.Gen{}
+		bpmstr := strconv.Itoa(gned.GetBpm()) // had to do this cuz bot accepts only string
+		scale := gned.GetKey()
+		wholeMessage := fmt.Sprintf("BPM: %v\nScale: %v", bpmstr, scale)
+		s.ChannelMessageSend(m.ChannelID, wholeMessage)
+
+	}
+
+	if m.Content == "-c" || m.Content == "-chords" {
+		gned := generator.Gen{}
+		chords := gned.GetChords()
+		wholeMessage := fmt.Sprintf("Chords: %v", chords)
+		s.ChannelMessageSend(m.ChannelID, wholeMessage)
+	}
+
+	if m.Content == "-scale" || m.Content == "-s" {
+		gned := generator.Gen{}
+		scale := gned.GetKey()
+		wholeMessage := fmt.Sprintf("Scale %v", scale)
+		s.ChannelMessageSend(m.ChannelID, wholeMessage)
+	}
+
 	if m.Content == "-generate" || m.Content == "-gen" || m.Content == ":3" {
 		gned := generator.Gen{}
 		bpmstr := strconv.Itoa(gned.GetBpm())
