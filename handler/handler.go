@@ -2,11 +2,15 @@ package handler
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"os/signal"
+	"strconv"
+	"strings"
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/mvstermind/halset/generator"
 )
 
 func New(token string) {
@@ -40,7 +44,18 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	if m.Content == "gen" {
-		s.ChannelMessageSend(m.ChannelID, "WIELKA POLSKA GUROM")
+	if m.Content == "generate" || m.Content == "gen" || m.Content == ":3" {
+		gned := generator.Gen{}
+		bpmstr := strconv.Itoa(gned.GetBpm()) // had to do this cuz bot accepts only string
+		chordsStr := strings.Join(gned.GetChords(), " ")
+		if m.Content == ":3" {
+
+			wholeMessage := fmt.Sprintf("How lovely :3\nBPM: %v\nKey: %v\nChords: %v\n", bpmstr, gned.GetKey(), chordsStr)
+			s.ChannelMessageSend(m.ChannelID, wholeMessage)
+		} else {
+			wholeMessage := fmt.Sprintf("BPM: %v\nKey: %v\nChords: %v\n", bpmstr, gned.GetKey(), chordsStr)
+			s.ChannelMessageSend(m.ChannelID, wholeMessage)
+		}
 	}
+
 }

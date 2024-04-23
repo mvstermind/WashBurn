@@ -1,4 +1,4 @@
-package main
+package generator
 
 import (
 	"fmt"
@@ -7,21 +7,19 @@ import (
 
 type Gen struct {
 	Bpm    int
-	Key    map[int]string
+	Key    [12]string
 	Chords [7]string
 }
 
 func (b *Gen) GetBpm() int {
-	b.Bpm = rand.Intn(100) + 60
+	b.Bpm = rand.Intn(100) + 60 //hardcoded numbers so you won't get like 3 bpm
 	return b.Bpm
 }
 
 func (b *Gen) GetKey() string {
 
-	b.Key = map[int]string{
-		1: "C", 2: "C#", 3: "D", 4: "D#", 5: "E", 6: "F", 7: "F#", 8: "G", 9: "G#",
-		10: "A", 11: "A#", 12: "B",
-	}
+	// i really used map on this thing b4...
+	b.Key = [12]string{"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"}
 	key := rand.Intn(12) + 1
 	gnedKey := b.Key[key]
 
@@ -37,12 +35,29 @@ func (b *Gen) GetKey() string {
 	return output
 }
 
-func main() {
+func (b *Gen) GetChords() []string {
+	var chords []string // create new random chor progression
+
+	b.Chords = [7]string{"I", "II", "III", "IV", "V", "VI", "VII"}
+	ranI := rand.Intn(4) + 1 // choose amount of chords
+
+	for i := 0; i < ranI; i++ {
+		r := rand.Intn(7)
+		chords = append(chords, b.Chords[r])
+	}
+	return chords
+
+}
+
+func New() {
 	gned := Gen{}
 	bpm := gned.GetBpm()
 	fmt.Printf("Bpm: %v\n", bpm)
 
 	key := gned.GetKey()
 	fmt.Printf("Scale: %v", key)
+
+	chords := gned.GetChords()
+	fmt.Printf("Chords: %v", chords)
 
 }
