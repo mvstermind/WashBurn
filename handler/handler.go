@@ -50,9 +50,7 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		bpmstr := strconv.Itoa(gned.GetBpm()) // had to do this cuz bot accepts only string
 		chordsStr := strings.Join(gned.GetChords(), " ")
 		if m.Content == ":3" {
-
-			wholeMessage := fmt.Sprintf("How lovely :3\nBPM: %v\nKey: %v\nChords: %v\n", bpmstr, gned.GetKey(), chordsStr)
-			s.ChannelMessageSend(m.ChannelID, wholeMessage)
+			s.ChannelMessageSend(m.ChannelID, Art)
 		} else {
 			wholeMessage := fmt.Sprintf("BPM: %v\nKey: %v\nChords: %v\n", bpmstr, gned.GetKey(), chordsStr)
 			s.ChannelMessageSend(m.ChannelID, wholeMessage)
