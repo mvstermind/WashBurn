@@ -5,7 +5,6 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
-	"strings"
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
@@ -45,16 +44,13 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	if m.Content == "generate" || m.Content == "gen" || m.Content == ":3" {
+	if m.Content == "generate minor" || m.Content == "gen min" || m.Content == ":3" {
 		gned := generator.Gen{}
 		bpmstr := strconv.Itoa(gned.GetBpm()) // had to do this cuz bot accepts only string
-		chordsStr := strings.Join(gned.GetChords(), " ")
-		if m.Content == ":3" {
-			s.ChannelMessageSend(m.ChannelID, Art)
-		} else {
-			wholeMessage := fmt.Sprintf("BPM: %v\nKey: %v\nChords: %v\n", bpmstr, gned.GetKey(), chordsStr)
-			s.ChannelMessageSend(m.ChannelID, wholeMessage)
-		}
-	}
+		wholeMessage := fmt.Sprintf("BPM: %v", bpmstr)
+		s.ChannelMessageSend(m.ChannelID, wholeMessage)
+		k, v := Midi(1)
+		s.ChannelFileSend(m.ChannelID, k, v)
 
+	}
 }
